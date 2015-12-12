@@ -2,7 +2,7 @@
 set -e
 repo="sickp/alpine-redis"
 latest=$(ls -r versions | head -1)
-tags="${latest} 1.9 mainline latest"
+tags="${latest} 3.0 3 latest"
 
 for tag in ${tags}; do
   docker push ${repo}:${tag}
