@@ -1,11 +1,15 @@
-FROM gliderlabs/alpine:3.2
+FROM gliderlabs/alpine:3.3
 MAINTAINER Adrian B. Danieli "https://github.com/sickp"
 
-ENV REDIS_VERSION=3.0.6
+ENV \
+  REDIS_VERSION=3.0.6 \
+  GOSU_VERSION=1.7 \
+  BUILD_PACKAGES="build-base linux-headers openssl" \
+  RUNTIME_PACKAGES=""
 
-RUN packages="build-base linux-headers openssl" && \
-  apk --update add ${packages} && \
-  wget -O /usr/local/bin/gosu https://github.com/tianon/gosu/releases/download/1.7/gosu-amd64 && \
+RUN \
+  apk --update add ${BUILD_PACKAGES} ${RUNTIME_PACKAGES} && \
+  wget -O /usr/local/bin/gosu https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-amd64 && \
   chmod +x /usr/local/bin/gosu && \
   cd /tmp && \
   wget http://download.redis.io/releases/redis-${REDIS_VERSION}.tar.gz && \
@@ -18,7 +22,7 @@ RUN packages="build-base linux-headers openssl" && \
   mkdir /data && \
   chown redis:redis /data && \
   rm -rf /tmp/* && \
-  apk del ${packages} && \
+  apk del ${BUILD_PACKAGES} && \
   rm -rf /var/cache/apk/*
 
 VOLUME ["/data"]
@@ -28,3 +32,4 @@ EXPOSE 6379
 
 COPY /entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
+CMD ["/etc/redis.conf"]
