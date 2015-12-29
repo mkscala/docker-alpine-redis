@@ -5,8 +5,8 @@ A lightweight [Redis][redis] [Docker image][alpine_redis] built on top of [Glide
 
 #### Tags
 
-* [`3.0.6`][dockerfile_3_0_6], [`3.0`][dockerfile_3_0_6], [`3`][dockerfile_3_0_6], [`latest`][dockerfile_3_0_6] ([Dockerfile][dockerfile_3_0_6], [Release notes][redis_changes], 2015 Dec 18)
-* [`3.0.5`][dockerfile_3_0_5] ([Dockerfile][dockerfile_3_0_5], 2015 Oct 15)
+* [`3.0.6`][dockerfile_3_0_6], [`3.0`][dockerfile_3_0_6], [`3`][dockerfile_3_0_6], [`latest`][dockerfile_3_0_6] ([Release notes][redis_changes], 2015-12-18)
+* [`3.0.5`][dockerfile_3_0_5] (2015-10-15)
 
 
 #### Basic Usage
@@ -211,10 +211,10 @@ myserver:6379>
 
 #### History
 
-- 2015 Dec 29 - Official Docker Redis compatibility, and improved documentation.
-- 2015 Dec 25 - Updated to Alpine Linux 3.3 (gcc 5.3.0), enable option passthrough to `redis-server`.
-- 2015 Dec 18 - Updated to Redis 3.0.6.
-- 2015 Dec 11 - Initial version.
+- 2015-12-29 - Official Docker Redis compatibility, and improved documentation.
+- 2015-12-25 - Updated to Alpine Linux 3.3 (gcc 5.3.0), enable option passthrough to `redis-server`.
+- 2015-12-18 - Updated to Redis 3.0.6.
+- 2015-12-11 - Initial version.
 
 [alpine_redis]:      https://hub.docker.com/r/sickp/alpine-redis/
 [gliderlabs_alpine]: https://hub.docker.com/r/gliderlabs/alpine/
