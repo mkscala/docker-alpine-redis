@@ -15,12 +15,36 @@ After the image name, just specify the executable to run followed by any options
 
 ```sh
 $ docker run --rm sickp/alpine-redis # redis-server /etc/redis.conf
+              _._                                                  
+         _.-``__ ''-._                                             
+    _.-``    `.  `_.  ''-._           Redis 3.0.6 (00000000/0) 64 bit
+.-`` .-```.  ```\/    _.,_ ''-._                                   
+(    '      ,       .-`  | `,    )     Running in standalone mode
+|`-._`-...-` __...-.``-._|'` _.-'|     Port: 6379
+|    `-._   `._    /     _.-'    |     PID: 1
+`-._    `-._  `-./  _.-'    _.-'                                   
+|`-._`-._    `-.__.-'    _.-'_.-'|                                  
+|    `-._`-._        _.-'_.-'    |           http://redis.io        
+`-._    `-._`-.__.-'_.-'    _.-'                                   
+|`-._`-._    `-.__.-'    _.-'_.-'|                                  
+|    `-._`-._        _.-'_.-'    |                                  
+`-._    `-._`-.__.-'_.-'    _.-'                                   
+    `-._    `-.__.-'    _.-'                                       
+        `-._        _.-'                                           
+            `-.__.-'                                               
+
+1:M 29 Dec 22:27:17.141 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
+1:M 29 Dec 22:27:17.141 # Server started, Redis version 3.0.6
+1:M 29 Dec 22:27:17.141 # WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+1:M 29 Dec 22:27:17.141 # WARNING you have Transparent Huge Pages (THP) support enabled in your kernel. This will create latency and memory usage issues with Redis. To fix this issue run the command 'echo never > /sys/kernel/mm/transparent_hugepage/enabled' as root, and add it to your /etc/rc.local in order to retain the setting after a reboot. Redis must be restarted after THP is disabled.
+1:M 29 Dec 22:27:17.141 * The server is now ready to accept connections on port 6379
 ```
 
 Explore the image in a container shell:
 
 ```sh
 $ docker run --rm --interactive --tty sickp/alpine-redis ash
+/data #
 ```
 
 Check the server version:
@@ -31,12 +55,12 @@ Redis server v=3.0.6 sha=00000000:0 malloc=jemalloc-3.6.0 bits=64 build=9e758fcb
 ```
 
 
-#### Simple Redis Server And CLI Example
+#### Example: Redis Server + CLI
 
 This example starts a default Redis server in its own network. It requires Docker 1.9+ as it uses Docker's modern
-networking support. We then connect to it using the Redis CLI (command line interface).
+networking support. We then connect to it using the Redis command line interface.
 
-##### Create Network
+##### Setup
 
 Create a new network called `mynetwork` that will allow our containers to communicate in isolation.
 
@@ -52,9 +76,9 @@ bbeffd0ee68a        mynetwork           bridge
 bad47935bd28        none                null  
 ```
 
-##### Run Redis
+##### Run Server
 
-Next we create a simple Redis server instance, and give it the name `myserver`. Data is stored on the volume `/data`, which is automatically created for you on your development/container host. Because we're running in the foreground with `--rm`, this volume will not dangle.
+Next we create a simple Redis server instance, and give it the name `myserver`. Data is stored on the volume `/data`, which is automatically created for you on your development/container host. Because we're running in the foreground and will be removed with `--rm`, this volume will not dangle.
 
 ```sh
 $ docker run --rm --net=mynetwork --name=myserver sickp/alpine-redis
@@ -83,7 +107,7 @@ $ docker run --rm --net=mynetwork --name=myserver sickp/alpine-redis
 1:M 29 Dec 22:18:04.019 * The server is now ready to accept connections on port 6379
 ```
 
-##### Connect To Redis
+##### Connect
 
 In another terminal, we now connect to our server using the Redis CLI. This ephemeral container is connected to the `mynetwork` network and runs the command `redis-cli -h myserver`. Here we specify the hostname `myserver` which Docker has automagically inserted into this container's `/etc/hosts` file.
 
@@ -187,7 +211,7 @@ myserver:6379>
 
 #### History
 
-- 2015 Dec 29 - Entrypoint fixes /data permissions when running redis-server.
+- 2015 Dec 29 - Official Docker Redis compatibility, and improved documentation.
 - 2015 Dec 25 - Updated to Alpine Linux 3.3 (gcc 5.3.0), enable option passthrough to `redis-server`.
 - 2015 Dec 18 - Updated to Redis 3.0.6.
 - 2015 Dec 11 - Initial version.
