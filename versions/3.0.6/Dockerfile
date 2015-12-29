@@ -30,6 +30,7 @@ WORKDIR /data
 
 EXPOSE 6379
 
-COPY /entrypoint.sh /entrypoint.sh
+COPY rootfs /
+
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["/etc/redis.conf"]
+CMD ["redis-server", "/etc/redis.conf"]
