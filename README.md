@@ -57,8 +57,7 @@ Redis server v=3.0.6 sha=00000000:0 malloc=jemalloc-3.6.0 bits=64 build=9e758fcb
 
 #### Example: Redis Server + CLI
 
-This example starts a default Redis server in its own network. It requires Docker 1.9+ as it uses Docker's modern
-networking support. We then connect to it using the Redis command line interface.
+This example starts a default Redis server in its own network. It requires Docker 1.9+ as it uses Docker's modern networking support. We then connect to it using the Redis command line interface.
 
 ##### Setup
 
@@ -206,6 +205,56 @@ cluster_enabled:0
 
 # Keyspace
 myserver:6379>
+```
+
+
+#### Example: Redis Master / Slave + Data Containers
+
+##### Setup
+
+Create a new network called `mynetwork` that will allow our containers to communicate in isolation.
+
+```sh
+$ docker network create mynetwork
+bbeffd0ee68a977fb868eee76bc764a6f746ad11b8ec567c83a63ae71fc850d4
+```
+
+Create data-only containers for the master and slave instances. This allows you to easily upgrade the server containers, while maintaining the persistent data stores.
+
+```sh
+$ docker create --name=redis-master-data sickp/alpine-redis
+1996974d4891995d476e8f015972d10388cb301fe585217760e31edc8005aa5a
+
+$ docker create --name=redis-slave-data sickp/alpine-redis
+dd8f12ab673805468fc0dbd7dadedb37aa87c20732725a1530ff150963c41a6c
+```
+
+##### Run Master and Slave Servers
+
+Start the master instance.
+
+```sh
+$ docker run --rm --name=redis-master --net=mynetwork --volumes-from=redis-master-data sickp/alpine-redis
+```
+
+Start the slave instance, setting `slaveof redis-master 6379`.
+
+```sh
+$ docker run --rm --name=redis-slave  --net=mynetwork --volumes-from=redis-slave-data  sickp/alpine-redis redis-server /etc/redis.conf --slaveof redis-master 6379
+```
+
+##### Connect
+
+Connect to the master instance.
+
+```sh
+$ docker run --rm --net=mynetwork --interactive --tty sickp/alpine-redis redis-cli -h redis-master
+```
+
+Connect to the slave instance.
+
+```sh
+$ docker run --rm --net=mynetwork --interactive --tty sickp/alpine-redis redis-cli -h redis-slave
 ```
 
 
