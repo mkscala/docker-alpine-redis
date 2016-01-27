@@ -1,11 +1,12 @@
-### Sickp's Alpine Linux Redis
+### Alpine Linux Redis
 
-A lightweight [Redis][redis] [Docker image][alpine_redis] built on top of [Glider Labs's Alpine Linux 3.3][gliderlabs_alpine] Docker image.
+A lightweight [Redis][redis] [Docker image][alpine_redis] built on top of [Alpine Linux][gliderlabs_alpine]. Tags with the `-k8s` suffix are built on [Alpine-Kubernetes][alpine_kubernetes], an image for Kubernetes and other Docker cluster environments that use DNS-based service discovery. It adds the necessary `search` domain support for DNS resolution.
 
 
 #### Tags
 
 * [`3.0.6`][dockerfile_3_0_6], [`3.0`][dockerfile_3_0_6], [`3`][dockerfile_3_0_6], [`latest`][dockerfile_3_0_6] ([Release notes][redis_changes], 2015-12-18)
+* [`3.0.6-k8s`][dockerfile_3_0_6_k8s], [`3.0-k8s`][dockerfile_3_0_6_k8s], [`3-k8s`][dockerfile_3_0_6_k8s], [`latest-k8s`][dockerfile_3_0_6_k8s] (Kubernetes support)
 * [`3.0.5`][dockerfile_3_0_5] (2015-10-15)
 
 
@@ -260,14 +261,17 @@ $ docker run --rm --net=mynetwork --interactive --tty sickp/alpine-redis redis-c
 
 #### History
 
+- 2015-01-27 - Added Kubernetes versions (-k8s), until Alpine Linux/musl adds DNS search support.
 - 2015-12-29 - Official Docker Redis compatibility, and improved documentation.
 - 2015-12-25 - Updated to Alpine Linux 3.3 (gcc 5.3.0), enable option passthrough to `redis-server`.
 - 2015-12-18 - Updated to Redis 3.0.6.
 - 2015-12-11 - Initial version.
 
-[alpine_redis]:      https://hub.docker.com/r/sickp/alpine-redis/
-[gliderlabs_alpine]: https://hub.docker.com/r/gliderlabs/alpine/
-[dockerfile_3_0_5]:  https://github.com/sickp/docker-alpine-redis/tree/master/versions/3.0.5/Dockerfile
-[dockerfile_3_0_6]:  https://github.com/sickp/docker-alpine-redis/tree/master/versions/3.0.6/Dockerfile
-[redis]:             http://redis.io/
-[redis_changes]:     https://raw.githubusercontent.com/antirez/redis/3.0/00-RELEASENOTES
+[alpine_kubernetes]:    https://hub.docker.com/r/janeczku/alpine-kubernetes/
+[alpine_redis]:         https://hub.docker.com/r/sickp/alpine-redis/
+[gliderlabs_alpine]:    https://hub.docker.com/r/gliderlabs/alpine/
+[dockerfile_3_0_5]:     https://github.com/sickp/docker-alpine-redis/tree/master/versions/3.0.5/Dockerfile
+[dockerfile_3_0_6]:     https://github.com/sickp/docker-alpine-redis/tree/master/versions/3.0.6/Dockerfile
+[dockerfile_3_0_6_k8s]: https://github.com/sickp/docker-alpine-redis/tree/master/versions/3.0.6-k8s/Dockerfile
+[redis]:                http://redis.io/
+[redis_changes]:        https://raw.githubusercontent.com/antirez/redis/3.0/00-RELEASENOTES

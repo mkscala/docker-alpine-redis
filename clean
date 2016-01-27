@@ -1,5 +1,0 @@
-#!/bin/bash
-set -e
-repo="sickp/alpine-redis"
-
-docker rmi $(docker images -q ${repo})

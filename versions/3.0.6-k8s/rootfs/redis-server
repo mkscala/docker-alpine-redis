@@ -1,0 +1,3 @@
+#!/bin/ash
+chown -R redis .
+exec gosu redis "$@"
