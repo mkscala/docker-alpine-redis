@@ -16,7 +16,7 @@ Tags with the `-k8s` suffix are built on [Alpine-Kubernetes][alpine_kubernetes],
 
 After the image name, just specify the executable to run followed by any options. By default, `redis-server /etc/redis.conf` will be executed.
 
-```sh
+```bash
 $ docker run --rm sickp/alpine-redis # redis-server /etc/redis.conf
               _._                                                  
          _.-``__ ''-._                                             
@@ -45,14 +45,14 @@ $ docker run --rm sickp/alpine-redis # redis-server /etc/redis.conf
 
 Explore the image in a container shell:
 
-```sh
-$ docker run --rm --interactive --tty sickp/alpine-redis ash
+```bash
+$ docker run --rm -it sickp/alpine-redis ash
 /data #
 ```
 
 Check the server version:
 
-```sh
+```bash
 $ docker run --rm sickp/alpine-redis redis-server -v
 Redis server v=3.0.6 sha=00000000:0 malloc=jemalloc-3.6.0 bits=64 build=9e758fcb6d3a7057
 ```
@@ -66,7 +66,7 @@ This example starts a default Redis server in its own network. It requires Docke
 
 Create a new network called `mynetwork` that will allow our containers to communicate in isolation.
 
-```sh
+```bash
 $ docker network create mynetwork
 bbeffd0ee68a977fb868eee76bc764a6f746ad11b8ec567c83a63ae71fc850d4
 
@@ -82,7 +82,7 @@ bad47935bd28        none                null
 
 Next we create a simple Redis server instance, and give it the name `myserver`. Data is stored on the volume `/data`, which is automatically created for you on your development/container host. Because we're running in the foreground and will be removed with `--rm`, this volume will not dangle.
 
-```sh
+```bash
 $ docker run --rm --net=mynetwork --name=myserver sickp/alpine-redis
               _._                                                  
          _.-``__ ''-._                                             
@@ -113,8 +113,8 @@ $ docker run --rm --net=mynetwork --name=myserver sickp/alpine-redis
 
 In another terminal, we now connect to our server using the Redis CLI. This ephemeral container is connected to the `mynetwork` network and runs the command `redis-cli -h myserver`. Here we specify the hostname `myserver` which Docker has automagically inserted into this container's `/etc/hosts` file.
 
-```sh
-$ docker run --rm --net=mynetwork --interactive --tty sickp/alpine-redis redis-cli -h myserver
+```bash
+$ docker run --rm --net=mynetwork -it sickp/alpine-redis redis-cli -h myserver
 myserver:6379> info
 # Server
 redis_version:3.0.6
@@ -217,14 +217,14 @@ myserver:6379>
 
 Create a new network called `mynetwork` that will allow our containers to communicate in isolation.
 
-```sh
+```bash
 $ docker network create mynetwork
 bbeffd0ee68a977fb868eee76bc764a6f746ad11b8ec567c83a63ae71fc850d4
 ```
 
 Create data-only containers for the master and slave instances. This allows you to easily upgrade the server containers, while maintaining the persistent data stores.
 
-```sh
+```bash
 $ docker create --name=redis-master-data sickp/alpine-redis
 1996974d4891995d476e8f015972d10388cb301fe585217760e31edc8005aa5a
 
@@ -236,13 +236,13 @@ dd8f12ab673805468fc0dbd7dadedb37aa87c20732725a1530ff150963c41a6c
 
 Start the master instance.
 
-```sh
+```bash
 $ docker run --rm --name=redis-master --net=mynetwork --volumes-from=redis-master-data sickp/alpine-redis
 ```
 
 Start the slave instance, setting `slaveof redis-master 6379`.
 
-```sh
+```bash
 $ docker run --rm --name=redis-slave  --net=mynetwork --volumes-from=redis-slave-data  sickp/alpine-redis redis-server /etc/redis.conf --slaveof redis-master 6379
 ```
 
@@ -250,14 +250,14 @@ $ docker run --rm --name=redis-slave  --net=mynetwork --volumes-from=redis-slave
 
 Connect to the master instance.
 
-```sh
-$ docker run --rm --net=mynetwork --interactive --tty sickp/alpine-redis redis-cli -h redis-master
+```bash
+$ docker run --rm --net=mynetwork -it sickp/alpine-redis redis-cli -h redis-master
 ```
 
 Connect to the slave instance.
 
-```sh
-$ docker run --rm --net=mynetwork --interactive --tty sickp/alpine-redis redis-cli -h redis-slave
+```bash
+$ docker run --rm --net=mynetwork -it sickp/alpine-redis redis-cli -h redis-slave
 ```
 
 
@@ -271,10 +271,10 @@ $ docker run --rm --net=mynetwork --interactive --tty sickp/alpine-redis redis-c
 
 [alpine_kubernetes]:    https://hub.docker.com/r/janeczku/alpine-kubernetes/
 [dockerhub_project]:    https://hub.docker.com/r/sickp/alpine-redis/
-[github_project]:       https://github.com/sickp/docker-alpine-redis/
-[gliderlabs_alpine]:    https://hub.docker.com/r/gliderlabs/alpine/
 [dockerfile_3_0_5]:     https://github.com/sickp/docker-alpine-redis/tree/master/versions/3.0.5/Dockerfile
 [dockerfile_3_0_6]:     https://github.com/sickp/docker-alpine-redis/tree/master/versions/3.0.6/Dockerfile
 [dockerfile_3_0_6_k8s]: https://github.com/sickp/docker-alpine-redis/tree/master/versions/3.0.6-k8s/Dockerfile
+[github_project]:       https://github.com/sickp/docker-alpine-redis/
+[gliderlabs_alpine]:    https://hub.docker.com/r/gliderlabs/alpine/
 [redis]:                http://redis.io/
 [redis_changes]:        https://raw.githubusercontent.com/antirez/redis/3.0/00-RELEASENOTES
