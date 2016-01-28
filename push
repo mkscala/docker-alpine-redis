@@ -1,11 +1,11 @@
 #!/bin/bash
 set -e
+
 repo="sickp/alpine-redis"
 latest=3.0.6
-tags="${latest} 3.0 3 latest"
+tags="${latest} ${latest}-k8s 3.0 3 latest"
 
 for tag in ${tags}; do
   docker push ${repo}:${tag}
-  docker push ${repo}:${tag}-k8s
   echo "=> Pushed ${repo}:${tag}"
 done

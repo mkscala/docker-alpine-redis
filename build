@@ -1,17 +1,19 @@
 #!/bin/bash
 set -e
-repo="sickp/alpine-redis"
+
+repo=sickp/alpine-redis
 latest=3.0.6
 tags="3.0 3 latest"
 version=${1:-$latest}
 
 docker build -t ${repo}:${version} --pull versions/${version}
-docker build -t ${repo}:${version}-k8s --pull versions/${version}-k8s
 echo "=> Built ${repo}:${version}"
+docker build -t ${repo}:${version}-k8s --pull versions/${version}-k8s
+echo "=> Built ${repo}:${version}-k8s"
+
 if [[ $latest == $version ]]; then
   for tag in ${tags}; do
     docker tag -f ${repo}:${version} ${repo}:${tag}
-    docker tag -f ${repo}:${version}-k8s ${repo}:${tag}-k8s
     echo "=> Tagged ${repo}:${tag}"
   done
 fi
