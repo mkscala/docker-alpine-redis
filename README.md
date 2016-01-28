@@ -1,12 +1,14 @@
 ### Alpine Linux Redis
 
-A lightweight [Redis][redis] [Docker image][alpine_redis] built on top of [Alpine Linux][gliderlabs_alpine]. Tags with the `-k8s` suffix are built on [Alpine-Kubernetes][alpine_kubernetes], an image for Kubernetes and other Docker cluster environments that use DNS-based service discovery. It adds the necessary `search` domain support for DNS resolution.
+A lightweight [Redis][redis] [Docker image][dockerhub_project] built atop [Alpine Linux][gliderlabs_alpine]. Available on [GitHub][github_project].
+
+Tags with the `-k8s` suffix are built on [Alpine-Kubernetes][alpine_kubernetes], an image for Kubernetes and other Docker cluster environments that use DNS-based service discovery. It adds the necessary `search` domain support for DNS resolution.
 
 
 #### Tags
 
-* [`3.0.6`][dockerfile_3_0_6], [`3.0`][dockerfile_3_0_6], [`3`][dockerfile_3_0_6], [`latest`][dockerfile_3_0_6] ([Release notes][redis_changes], 2015-12-18)
-* [`3.0.6-k8s`][dockerfile_3_0_6_k8s], [`3.0-k8s`][dockerfile_3_0_6_k8s], [`3-k8s`][dockerfile_3_0_6_k8s], [`latest-k8s`][dockerfile_3_0_6_k8s] (Kubernetes support)
+* [`3.0.6`][dockerfile_3_0_6], [`3.0`][dockerfile_3_0_6], [`3`][dockerfile_3_0_6], [`latest`][dockerfile_3_0_6] (2015-12-18, [Release notes][redis_changes])
+* [`3.0.6-k8s`][dockerfile_3_0_6_k8s] (for Kubernetes)
 * [`3.0.5`][dockerfile_3_0_5] (2015-10-15)
 
 
@@ -268,7 +270,8 @@ $ docker run --rm --net=mynetwork --interactive --tty sickp/alpine-redis redis-c
 - 2015-12-11 - Initial version.
 
 [alpine_kubernetes]:    https://hub.docker.com/r/janeczku/alpine-kubernetes/
-[alpine_redis]:         https://hub.docker.com/r/sickp/alpine-redis/
+[dockerhub_project]:    https://hub.docker.com/r/sickp/alpine-redis/
+[github_project]:       https://github.com/sickp/docker-alpine-redis/
 [gliderlabs_alpine]:    https://hub.docker.com/r/gliderlabs/alpine/
 [dockerfile_3_0_5]:     https://github.com/sickp/docker-alpine-redis/tree/master/versions/3.0.5/Dockerfile
 [dockerfile_3_0_6]:     https://github.com/sickp/docker-alpine-redis/tree/master/versions/3.0.6/Dockerfile
