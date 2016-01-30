@@ -2,7 +2,7 @@
 set -e
 
 repo="sickp/alpine-redis"
-latest=3.0.6
+latest=3.0.7
 tags="${latest} ${latest}-k8s 3.0 3 latest"
 
 for tag in ${tags}; do

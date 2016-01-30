@@ -7,8 +7,9 @@ Tags with the `-k8s` suffix are built on [Alpine-Kubernetes][alpine_kubernetes],
 
 #### Tags
 
-* [`3.0.6`][dockerfile_3_0_6], [`3.0`][dockerfile_3_0_6], [`3`][dockerfile_3_0_6], [`latest`][dockerfile_3_0_6] (2015-12-18, [Release notes][redis_changes])
-* [`3.0.6-k8s`][dockerfile_3_0_6_k8s] (for Kubernetes)
+* [`3.0.7`][dockerfile_3_0_7], [`3.0`][dockerfile_3_0_7], [`3`][dockerfile_3_0_7], [`latest`][dockerfile_3_0_7] (2016-01-28, [Release notes][redis_changes])
+* [`3.0.7-k8s`][dockerfile_3_0_7_k8s] (for Kubernetes)
+* [`3.0.6`][dockerfile_3_0_6], [`3.0.6-k8s`][dockerfile_3_0_6_k8s] (2015-12-18)
 * [`3.0.5`][dockerfile_3_0_5] (2015-10-15)
 
 
@@ -20,7 +21,7 @@ After the image name, just specify the executable to run followed by any options
 $ docker run --rm sickp/alpine-redis # redis-server /etc/redis.conf
               _._                                                  
          _.-``__ ''-._                                             
-    _.-``    `.  `_.  ''-._           Redis 3.0.6 (00000000/0) 64 bit
+    _.-``    `.  `_.  ''-._           Redis 3.0.7 (00000000/0) 64 bit
 .-`` .-```.  ```\/    _.,_ ''-._                                   
 (    '      ,       .-`  | `,    )     Running in standalone mode
 |`-._`-...-` __...-.``-._|'` _.-'|     Port: 6379
@@ -36,11 +37,11 @@ $ docker run --rm sickp/alpine-redis # redis-server /etc/redis.conf
         `-._        _.-'                                           
             `-.__.-'                                               
 
-1:M 29 Dec 22:27:17.141 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
-1:M 29 Dec 22:27:17.141 # Server started, Redis version 3.0.6
-1:M 29 Dec 22:27:17.141 # WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
-1:M 29 Dec 22:27:17.141 # WARNING you have Transparent Huge Pages (THP) support enabled in your kernel. This will create latency and memory usage issues with Redis. To fix this issue run the command 'echo never > /sys/kernel/mm/transparent_hugepage/enabled' as root, and add it to your /etc/rc.local in order to retain the setting after a reboot. Redis must be restarted after THP is disabled.
-1:M 29 Dec 22:27:17.141 * The server is now ready to accept connections on port 6379
+1:M 30 Jan 16:12:14.608 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
+1:M 30 Jan 16:12:14.608 # Server started, Redis version 3.0.7
+1:M 30 Jan 16:12:14.609 # WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+1:M 30 Jan 16:12:14.609 # WARNING you have Transparent Huge Pages (THP) support enabled in your kernel. This will create latency and memory usage issues with Redis. To fix this issue run the command 'echo never > /sys/kernel/mm/transparent_hugepage/enabled' as root, and add it to your /etc/rc.local in order to retain the setting after a reboot. Redis must be restarted after THP is disabled.
+1:M 30 Jan 16:12:14.609 * The server is now ready to accept connections on port 6379
 ```
 
 Explore the image in a container shell:
@@ -54,7 +55,10 @@ Check the server version:
 
 ```bash
 $ docker run --rm sickp/alpine-redis redis-server -v
-Redis server v=3.0.6 sha=00000000:0 malloc=jemalloc-3.6.0 bits=64 build=9e758fcb6d3a7057
+Redis server v=3.0.7 sha=00000000:0 malloc=jemalloc-3.6.0 bits=64 build=f6cb15f11092161
+
+$ docker run --rm sickp/alpine-redis cat /etc/alpine-release
+3.3.1
 ```
 
 
@@ -263,7 +267,8 @@ $ docker run --rm --net=mynetwork -it sickp/alpine-redis redis-cli -h redis-slav
 
 #### History
 
-- 2015-01-27 - Added Kubernetes versions (-k8s), until Alpine Linux/musl adds DNS search support.
+- 2016-01-30 - Updated to Redis 3.0.7.
+- 2016-01-27 - Added Kubernetes versions (-k8s), until Alpine Linux/musl adds DNS search support.
 - 2015-12-29 - Official Docker Redis compatibility, and improved documentation.
 - 2015-12-25 - Updated to Alpine Linux 3.3 (gcc 5.3.0), enable option passthrough to `redis-server`.
 - 2015-12-18 - Updated to Redis 3.0.6.
@@ -274,6 +279,8 @@ $ docker run --rm --net=mynetwork -it sickp/alpine-redis redis-cli -h redis-slav
 [dockerfile_3_0_5]:     https://github.com/sickp/docker-alpine-redis/tree/master/versions/3.0.5/Dockerfile
 [dockerfile_3_0_6]:     https://github.com/sickp/docker-alpine-redis/tree/master/versions/3.0.6/Dockerfile
 [dockerfile_3_0_6_k8s]: https://github.com/sickp/docker-alpine-redis/tree/master/versions/3.0.6-k8s/Dockerfile
+[dockerfile_3_0_7]:     https://github.com/sickp/docker-alpine-redis/tree/master/versions/3.0.7/Dockerfile
+[dockerfile_3_0_7_k8s]: https://github.com/sickp/docker-alpine-redis/tree/master/versions/3.0.7-k8s/Dockerfile
 [github_project]:       https://github.com/sickp/docker-alpine-redis/
 [gliderlabs_alpine]:    https://hub.docker.com/r/gliderlabs/alpine/
 [redis]:                http://redis.io/

@@ -2,7 +2,7 @@
 set -e
 
 repo=sickp/alpine-redis
-latest=3.0.6
+latest=3.0.7
 tags="3.0 3 latest"
 version=${1:-$latest}
 
