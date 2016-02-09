@@ -267,7 +267,7 @@ $ docker run --rm --net=mynetwork -it sickp/alpine-redis redis-cli -h redis-slav
 
 #### History
 
-- 2016-02-09 - Updated to OpenSSL 1.0.2f. Added support for ALPINE_NO_RESOLVER in 1.9.10-k8s.
+- 2016-02-09 - Added support for ALPINE_NO_RESOLVER in 1.9.10-k8s.
 - 2016-01-30 - Updated to Redis 3.0.7.
 - 2016-01-27 - Added Kubernetes versions (-k8s), until Alpine Linux/musl adds DNS search support.
 - 2015-12-29 - Official Docker Redis compatibility, and improved documentation.
