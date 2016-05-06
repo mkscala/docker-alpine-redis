@@ -1,19 +1,51 @@
-#!/bin/bash
-set -e
+#!/usr/bin/env ruby
+require "erb"
+require "fileutils"
 
-repo=sickp/alpine-redis
-latest=3.0.7
-tags="3.0 3 latest"
-version=${1:-$latest}
+repo="sickp/alpine-redis"
 
-docker build -t ${repo}:${version} --pull versions/${version}
-echo "=> Built ${repo}:${version}"
-docker build -t ${repo}:${version}-k8s --pull versions/${version}-k8s
-echo "=> Built ${repo}:${version}-k8s"
+redis_version = ARGV.first
+case redis_version
+when /\A3\.2\.\d+\z/
+  tags = %w(3.2 3 stable latest)
+when /\A3\.0\.\d+\z/
+  tags = %w(3.0 old)
+else
+  puts "Usage: build <redis_version>"
+  puts "  <redis_version> = 3.2.x | 3.0.x"
+  exit 1
+end
 
-if [[ $latest == $version ]]; then
-  for tag in ${tags}; do
-    docker tag -f ${repo}:${version} ${repo}:${tag}
-    echo "=> Tagged ${repo}:${tag}"
-  done
-fi
+root_dir = File.dirname(__FILE__)
+template_dir = File.join(root_dir, "templates")
+
+# Plain version
+gosu_version = "1.8"
+template = ERB.new(File.read(File.join(template_dir, "Dockerfile.erb")))
+version_dir = File.join(root_dir, "versions", redis_version)
+FileUtils.rm_rf(version_dir)
+FileUtils.mkdir(version_dir)
+FileUtils.cp_r(File.join(template_dir, "rootfs"), version_dir)
+File.write(File.join(version_dir, "Dockerfile"), template.result(binding))
+
+system("docker build -t #{repo}:#{redis_version} --pull #{version_dir}") || abort
+puts "Built #{repo}:#{redis_version}"
+
+# Kubernetes version
+template = ERB.new(File.read(File.join(template_dir, "Dockerfile-k8s.erb")))
+version_dir = File.join(root_dir, "versions", "#{redis_version}-k8s")
+FileUtils.rm_rf(version_dir)
+FileUtils.mkdir(version_dir)
+FileUtils.cp_r(File.join(template_dir, "rootfs-k8s"), File.join(version_dir, "rootfs"))
+File.write(File.join(version_dir, "Dockerfile"), template.result(binding))
+
+system("docker build -t #{repo}:#{redis_version}-k8s --pull #{version_dir}") || abort
+puts "Built #{repo}:#{redis_version}-k8s"
+
+# Tag
+tags.each do |tag|
+  system("docker tag #{repo}:#{redis_version} #{repo}:#{tag}") || abort
+  puts "Tagged #{repo}:#{tag}"
+  system("docker tag #{repo}:#{redis_version}-k8s #{repo}:#{tag}-k8s") || abort
+  puts "Tagged #{repo}:#{tag}-k8s"
+end

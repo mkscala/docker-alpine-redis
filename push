@@ -1,11 +1,23 @@
-#!/bin/bash
-set -e
-
+#!/usr/bin/env ruby
 repo="sickp/alpine-redis"
-latest=3.0.7
-tags="${latest} ${latest}-k8s 3.0 3 latest"
 
-for tag in ${tags}; do
-  docker push ${repo}:${tag}
-  echo "=> Pushed ${repo}:${tag}"
-done
+redis_version = ARGV.first
+case redis_version
+when /\A3\.2\.\d+\z/
+  tags = %w(3.2 3 stable latest)
+when /\A3\.0\.\d+\z/
+  tags = %w(3.0 old)
+else
+  puts "Usage: push <redis_version>"
+  puts "  <redis_version> = 3.2.x | 3.0.x"
+  exit 1
+end
+
+tags.unshift(redis_version)
+
+tags.each do |tag|
+  system("docker push #{repo}:#{tag}") || abort
+  puts "Pushed #{repo}:#{tag}"
+  system("docker push #{repo}:#{tag}-k8s") || abort
+  puts "Pushed #{repo}:#{tag}-k8s"
+end

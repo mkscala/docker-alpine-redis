@@ -1,0 +1,3 @@
+#!/bin/ash
+chown -R redis:redis /data
+exec s6-setuidgid redis /usr/local/bin/redis-server-wrapped "$@"
